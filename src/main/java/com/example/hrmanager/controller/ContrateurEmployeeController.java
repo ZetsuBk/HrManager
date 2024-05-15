@@ -1,7 +1,7 @@
 package com.example.hrmanager.controller;
 
-import com.example.hrmanager.model.PartTimeEmployee;
-import com.example.hrmanager.serviceImpl.PartTimeEmployeeService;
+import com.example.hrmanager.model.ContrateurEmployee;
+import com.example.hrmanager.serviceImpl.ContrateurEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,31 +11,31 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/employees/partTime")
-public class PartTimeEmployeeController {
+@RequestMapping("/employees/contrateur")
+public class ContrateurEmployeeController {
 
     @Autowired
-    private PartTimeEmployeeService partTimeEmployeeService;
+    private ContrateurEmployeeService contrateurEmployeeService;
 
     @GetMapping()
-    public ResponseEntity<List<PartTimeEmployee>> getAll() {
-        return new ResponseEntity<>(partTimeEmployeeService.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<ContrateurEmployee>> getAll() {
+        return new ResponseEntity<>(contrateurEmployeeService.getAll(), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<String> add(@RequestBody PartTimeEmployee employee) {
+    public ResponseEntity<String> add(@RequestBody ContrateurEmployee employee) {
         employee.setSalaryPerHours(employee.calculatSalary());
-        partTimeEmployeeService.save(employee);
+        contrateurEmployeeService.save(employee);
         return new ResponseEntity<>("Employee was add successfully", HttpStatus.OK);
     }
 
     @PutMapping
-    ResponseEntity<String> update(@RequestBody PartTimeEmployee employee) {
-        Optional<PartTimeEmployee> partTimeEmployeeOptional = partTimeEmployeeService.getById(employee.getId());
-        if (partTimeEmployeeOptional.isEmpty()) {
+    ResponseEntity<String> update(@RequestBody ContrateurEmployee employee) {
+        Optional<ContrateurEmployee> contrateurEmployeeOptional = contrateurEmployeeService.getById(employee.getId());
+        if (contrateurEmployeeOptional.isEmpty()) {
             return new ResponseEntity<>("Employee not Exist ", HttpStatus.BAD_REQUEST);
         }
-        partTimeEmployeeService.save(employee);
+        contrateurEmployeeService.save(employee);
         return new ResponseEntity<>("Employee was updated successfully", HttpStatus.OK);
 
 
@@ -43,13 +43,13 @@ public class PartTimeEmployeeController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") long id) {
-        Optional<PartTimeEmployee> employeeOptional = partTimeEmployeeService.getById(id);
+        Optional<ContrateurEmployee> employeeOptional = contrateurEmployeeService.getById(id);
         if (employeeOptional.isEmpty()) {
             return new ResponseEntity<>("Employee not Exist ", HttpStatus.BAD_REQUEST);
         }
-        PartTimeEmployee employee = employeeOptional.get();
+        ContrateurEmployee employee = employeeOptional.get();
         employee.setActive(false);
-        partTimeEmployeeService.save(employee);
+        contrateurEmployeeService.save(employee);
         return new ResponseEntity<>("Employee was deleted successfully", HttpStatus.OK);
     }
 }
