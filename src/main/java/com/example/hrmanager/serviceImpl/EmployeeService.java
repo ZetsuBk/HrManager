@@ -5,6 +5,8 @@ import com.example.hrmanager.model.Employee;
 import com.example.hrmanager.model.FullTimeEmployee;
 import com.example.hrmanager.model.PartTimeEmployee;
 import com.example.hrmanager.repository.EmployeeRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class EmployeeService {
     }
 
     public List<Employee> getAllEmployer() {
-        return employeeRepository.findAll().stream().filter(Employee::getActive).collect(Collectors.toList());
+        return employeeRepository.findAllByActiveTrue();
     }
 
 
@@ -37,5 +39,15 @@ public class EmployeeService {
         return employeeRepository.findById(id);
     }
 
+    public Boolean delete(long id){
+        Optional<Employee> employeeOptional = getById(id);
+        if (employeeOptional.isEmpty()) {
+            return false;
+        }
+        Employee employee = employeeOptional.get();
+        employee.setActive(false);
+        employeeRepository.save(employee);
+        return true;
 
+    }
 }

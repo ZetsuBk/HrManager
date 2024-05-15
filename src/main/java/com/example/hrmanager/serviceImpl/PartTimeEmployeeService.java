@@ -1,6 +1,7 @@
 package com.example.hrmanager.serviceImpl;
 
 import com.example.hrmanager.model.Employee;
+import com.example.hrmanager.model.FullTimeEmployee;
 import com.example.hrmanager.model.PartTimeEmployee;
 import com.example.hrmanager.repository.PartTimeEmployeeRepository;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class PartTimeEmployeeService {
     }
 
     public void save(PartTimeEmployee partTimeEmployee) {
+        partTimeEmployee.setSalaryPerHours(partTimeEmployee.calculatSalary());
         partTimeEmployeeRepository.save(partTimeEmployee);
     }
 
@@ -30,5 +32,12 @@ public class PartTimeEmployeeService {
         return partTimeEmployeeRepository.findById(id);
     }
 
-
+    public Boolean update(PartTimeEmployee partTimeEmployee) {
+        Optional<PartTimeEmployee> partTimeEmployeeOptional = getById(partTimeEmployee.getId());
+        if (partTimeEmployeeOptional.isEmpty()) {
+            return false;
+        }
+        save(partTimeEmployee);
+        return true;
+    }
 }

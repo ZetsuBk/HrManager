@@ -2,6 +2,7 @@ package com.example.hrmanager.serviceImpl;
 
 import com.example.hrmanager.model.ContrateurEmployee;
 import com.example.hrmanager.model.Employee;
+import com.example.hrmanager.model.PartTimeEmployee;
 import com.example.hrmanager.repository.ContrateurEmployeeRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +24,21 @@ public class ContrateurEmployeeService {
     }
 
     public void save(ContrateurEmployee contrateurEmployee) {
+        contrateurEmployee.setSalaryPerHours(contrateurEmployee.calculatSalary());
         contrateurEmployeeRepository.save(contrateurEmployee);
     }
 
     public Optional<ContrateurEmployee> getById(long id) {
         return contrateurEmployeeRepository.findById(id);
     }
+
+    public Boolean update(ContrateurEmployee contrateurEmployee) {
+        Optional<ContrateurEmployee> contrateurEmployeeOptional = getById(contrateurEmployee.getId());
+        if (contrateurEmployeeOptional.isEmpty()) {
+            return false;
+        }
+        save(contrateurEmployee);
+        return true;
+    }
+
 }

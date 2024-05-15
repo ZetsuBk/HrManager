@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/employees/fullTime")
@@ -24,32 +23,16 @@ public class FullTimeEmployeeController {
 
     @PostMapping
     public ResponseEntity<String> add(@RequestBody FullTimeEmployee employee) {
-        employee.setSalaryPerYear(employee.calculatSalary());
         fullTimeEmployeeService.save(employee);
         return new ResponseEntity<>("Employee was add successfully", HttpStatus.OK);
     }
 
     @PutMapping
     ResponseEntity<String> update(@RequestBody FullTimeEmployee employee) {
-        Optional<FullTimeEmployee> fullTimeEmployeeOptional = fullTimeEmployeeService.getById(employee.getId());
-        if (fullTimeEmployeeOptional.isEmpty()) {
-            return new ResponseEntity<>("Employee not Exist ", HttpStatus.BAD_REQUEST);
-        }
-        fullTimeEmployeeService.save(employee);
-        return new ResponseEntity<>("Employee was updated successfully", HttpStatus.OK);
-
-
+        return fullTimeEmployeeService.update(employee) ?
+                new ResponseEntity<>("Employee was updated successfully ", HttpStatus.BAD_REQUEST) :
+                new ResponseEntity<>("Employee not Exist ", HttpStatus.BAD_REQUEST);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") long id) {
-        Optional<FullTimeEmployee> employeeOptional = fullTimeEmployeeService.getById(id);
-        if (employeeOptional.isEmpty()) {
-            return new ResponseEntity<>("Employee not Exist ", HttpStatus.BAD_REQUEST);
-        }
-        FullTimeEmployee employee = employeeOptional.get();
-        employee.setActive(false);
-        fullTimeEmployeeService.save(employee);
-        return new ResponseEntity<>("Employee was deleted successfully", HttpStatus.OK);
-    }
+
 }

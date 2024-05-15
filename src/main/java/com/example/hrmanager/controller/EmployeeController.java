@@ -25,10 +25,10 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.getAllEmployer(), HttpStatus.OK) ;
     }
 
-
-
-
-
-
-
+    @PatchMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable("id") long id) {
+        return  employeeService.delete(id) ?
+                new ResponseEntity<>("Employee was deleted successfully ", HttpStatus.BAD_REQUEST) :
+                new ResponseEntity<>("Employee not Exist ", HttpStatus.BAD_REQUEST);
+    }
 }

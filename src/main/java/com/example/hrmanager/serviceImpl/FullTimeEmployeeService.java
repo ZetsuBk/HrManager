@@ -3,6 +3,8 @@ package com.example.hrmanager.serviceImpl;
 import com.example.hrmanager.model.Employee;
 import com.example.hrmanager.model.FullTimeEmployee;
 import com.example.hrmanager.repository.FullTimeEmployeeRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,14 +20,26 @@ public class FullTimeEmployeeService {
     }
 
     public List<FullTimeEmployee> getAll() {
-        return fullTimeEmployeeRepository.findAll().stream().filter(Employee::getActive).collect(Collectors.toList());
+        return fullTimeEmployeeRepository.findAllByActiveTrue();
     }
 
     public void save(FullTimeEmployee fullTimeEmployee) {
+        fullTimeEmployee.setSalaryPerYear(fullTimeEmployee.calculatSalary());
         fullTimeEmployeeRepository.save(fullTimeEmployee);
     }
 
     public Optional<FullTimeEmployee> getById(long id) {
         return fullTimeEmployeeRepository.findById(id);
     }
+
+    public Boolean update(FullTimeEmployee fullTimeEmployee){
+        Optional<FullTimeEmployee> fullTimeEmployeeOptional = getById(fullTimeEmployee.getId());
+        if (fullTimeEmployeeOptional.isEmpty()) {
+            return false;
+        }
+        save(fullTimeEmployee);
+        return true;
+
+    }
+
 }

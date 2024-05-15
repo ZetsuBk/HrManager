@@ -24,32 +24,16 @@ public class ContrateurEmployeeController {
 
     @PostMapping
     public ResponseEntity<String> add(@RequestBody ContrateurEmployee employee) {
-        employee.setSalaryPerHours(employee.calculatSalary());
         contrateurEmployeeService.save(employee);
         return new ResponseEntity<>("Employee was add successfully", HttpStatus.OK);
     }
 
     @PutMapping
     ResponseEntity<String> update(@RequestBody ContrateurEmployee employee) {
-        Optional<ContrateurEmployee> contrateurEmployeeOptional = contrateurEmployeeService.getById(employee.getId());
-        if (contrateurEmployeeOptional.isEmpty()) {
-            return new ResponseEntity<>("Employee not Exist ", HttpStatus.BAD_REQUEST);
-        }
-        contrateurEmployeeService.save(employee);
-        return new ResponseEntity<>("Employee was updated successfully", HttpStatus.OK);
-
-
+        return contrateurEmployeeService.update(employee) ?
+                new ResponseEntity<>("Employee was updated successfully ", HttpStatus.BAD_REQUEST) :
+                new ResponseEntity<>("Employee not Exist ", HttpStatus.BAD_REQUEST);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") long id) {
-        Optional<ContrateurEmployee> employeeOptional = contrateurEmployeeService.getById(id);
-        if (employeeOptional.isEmpty()) {
-            return new ResponseEntity<>("Employee not Exist ", HttpStatus.BAD_REQUEST);
-        }
-        ContrateurEmployee employee = employeeOptional.get();
-        employee.setActive(false);
-        contrateurEmployeeService.save(employee);
-        return new ResponseEntity<>("Employee was deleted successfully", HttpStatus.OK);
-    }
+
 }
