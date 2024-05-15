@@ -15,7 +15,6 @@ abstract public class Employee implements Payable {
     private String name;
     private Role role;
     private Boolean active;
-
     public Employee() {
     }
 

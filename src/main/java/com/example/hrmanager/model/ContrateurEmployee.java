@@ -3,7 +3,7 @@ package com.example.hrmanager.model;
 import jakarta.persistence.Entity;
 
 @Entity
-public class ContrateurEmployee extends PartimeEmployee {
+public class ContrateurEmployee extends PartTimeEmployee {
     private int contraDurationInDays;
 
     private double salaryPerContra;

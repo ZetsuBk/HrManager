@@ -1,5 +1,6 @@
 package com.example.hrmanager.controller;
 
+import com.example.hrmanager.Exception.EmployeeServiceExceptions;
 import com.example.hrmanager.model.Employee;
 import com.example.hrmanager.model.FullTimeEmployee;
 import com.example.hrmanager.serviceImpl.EmployeeService;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/employees")
@@ -22,7 +24,6 @@ public class EmployeeController {
     public ResponseEntity<List<Employee>> getAll(){
         return new ResponseEntity<>(employeeService.getAllEmployer(), HttpStatus.OK) ;
     }
-
 
 
 
